@@ -41,5 +41,4 @@ end
 
 % fit superposition
 [fit, m3pps] = m3pp_superpos_fit_count(av, btv, binfv, m3tv, t, tinf);
-
 end

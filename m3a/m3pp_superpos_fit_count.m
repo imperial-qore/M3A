@@ -33,7 +33,6 @@ end
 
 % perform superposition
 fit = mmap_superpos(m3pps);
-
 % compare
 fa = map_count_mean(fit,1);
 fprintf('Rate: input = %f, %f\n', a, fa);
