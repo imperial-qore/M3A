@@ -19,7 +19,7 @@ of MMAPs and fitting marked traces with MMAPs. The documentation of M3A is avail
 <br>MMAP = m3afit_auto(T,'NumStates',2)
 
 <p><b>License</b>
-M3A is released under BSD-3 license.
+<br>M3A is released under BSD-3 license.
 
 <p><b>References</b>
 <br>Andrea Sansottera, Giuliano Casale, Paolo Cremonesi,
