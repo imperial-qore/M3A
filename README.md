@@ -16,6 +16,7 @@ If you use M3A for your research, please reference the following paper:
 MATLAB Example:
 % S(i): inter-arrival time between i-th and (i-1)-th arrivals 
 % C(i): class of i-th arrival
+load example.mat
 T = m3afit_init(S,C)
 MMAP = m3afit_auto(T,'NumStates',2)
 
