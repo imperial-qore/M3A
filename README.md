@@ -7,12 +7,6 @@ M3A is a set of Matlab functions designed for computing the statistical descript
 of MMAPs and fitting marked traces with MMAPs. The documentation of M3A is available
 <a href="https://github.com/Imperial-AESOP/M3A/blob/master/m3a.pdf">here</a>.
 
-M3A is a joint work of
-<a href="https://www.linkedin.com/in/andrea-sansottera-5b688579">Andrea Sansottera<a>,
-<a href="http://wp.doc.ic.ac.uk/gcasale/">Giuliano Casale</a> and
-<a href="http://home.deib.polimi.it/cremones/">Paolo Cremonesi</a>.
-If you use M3A for your research, please reference the following paper:
-
 <p><b>Installation Requirements</b>
 <br>- A recent version of MATLAB, e.g., R2012 or above.
 <br>- <a href="https://github.com/kpctoolboxteam/kpc-toolbox/">KPC-Toolbox</a> version 0.3.2 or above.
@@ -23,6 +17,9 @@ If you use M3A for your research, please reference the following paper:
 <br>load example.mat
 <br>T = m3afit_init(S,C)
 <br>MMAP = m3afit_auto(T,'NumStates',2)
+
+<p><b>License</b>
+M3A is released under BSD-3 license.
 
 <p><b>References</b>
 <br>Andrea Sansottera, Giuliano Casale, Paolo Cremonesi,
