@@ -13,6 +13,13 @@ M3A is a joint work of
 <a href="http://home.deib.polimi.it/cremones/">Paolo Cremonesi</a>.
 If you use M3A for your research, please reference the following paper:
 
+MATLAB Example:
+% S(i): inter-arrival time between i-th and (i-1)-th arrivals 
+% C(i): class of i-th arrival
+T = m3afit_init(S,C)
+MMAP = m3afit_auto(T,'NumStates',2)
+
+
 Andrea Sansottera, Giuliano Casale, Paolo Cremonesi,
 *Fitting Second-Order Acyclic Marked Markovian Arrival Processes*,
 IEEE/IFIP Dependable Systems and Networks (DSN), 2013

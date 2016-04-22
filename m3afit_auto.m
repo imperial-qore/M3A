@@ -12,7 +12,7 @@ function [MMAP]=m3afit_auto(mtrace, varargin)
 % MMAP          - fitted marked MAP
 %
 % EXAMPLE
-%  T = m3afit_init(S)
+%  T = m3afit_init(S,C)
 %  MMAP = m3afit_auto(T,'NumStates',2)
 %
 % OPTION LIST
@@ -44,6 +44,7 @@ end
 
 % Default settings
 options.NumStates = [];
+options.Method = 1;
 
 % Parse Optional Parameters
 options=ParseOptPara(options,OptionNames,OptionTypes,OptionValues,varargin);
@@ -59,7 +60,7 @@ if mtrace.NumClasses == 2 && options.NumStates == 2 && options.Method==0 % inter
     MMAPType=sprintf('%d-state MAMAP[%d]',options.NumStates,mtrace.NumClasses);
     fprintf(1,'Init: M3A will search for a %s\n',MMAPType);
     MMAP = mamap22_fit_gamma_fs_trace(mtrace.S,mtrace.C);
-elseif  mtrace.NumClasses > 2 && options.NumStates >= 2 &&options.Method==0 % inter-arrivals
+elseif  mtrace.NumClasses > 2 && options.NumStates >= 2 && options.Method==0 % inter-arrivals
     MMAPType=sprintf('%d-state MAMAP[%d]',options.NumStates,mtrace.NumClasses);
     fprintf(1,'Init: M3A will search for a %s\n',MMAPType);
     MMAP = mamap2m_fit_trace(mtrace.S,mtrace.C);
