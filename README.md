@@ -15,7 +15,7 @@ If you use M3A for your research, please reference the following paper:
 
 <p><b>Installation Requirements</b>
 <br>- A recent version of MATLAB, e.g., R2012 or above.
-<br>- <a href="https://github.com/kpctoolboxteam/kpc-toolbox/">KPC-Toolbox</a>
+<br>- <a href="https://github.com/kpctoolboxteam/kpc-toolbox/">KPC-Toolbox</a> v. 0.3.2 or above.
 
 <p><b>MATLAB Example</b>
 <br>% S(i): inter-arrival time between i-th and (i-1)-th arrivals 
