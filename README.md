@@ -27,7 +27,7 @@ of MMAPs and fitting marked traces with MMAPs. The documentation of M3A is avail
 IEEE/IFIP Dependable Systems and Networks (DSN), 2013.
 <a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6575347">Paper</a>
 
-Andrea Sansottera, Giuliano Casale, Paolo Cremonesi,
+Giuliano Casale, Andrea Sansottera, Paolo Cremonesi,
 *Compact Markov-Modulated Models for Multiclass Trace Fitting*,
 European J. of Operational Research, INFORMS, 2016.
 <a href="http://www.sciencedirect.com/science/article/pii/S0377221716304258">Paper</a>
