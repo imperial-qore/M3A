@@ -22,14 +22,12 @@ of MMAPs and fitting marked traces with MMAPs. The documentation of M3A is avail
 <br>M3A is released under BSD-3 license.
 
 <p><b>References</b>
-<br>Andrea Sansottera, Giuliano Casale, Paolo Cremonesi,
-*Fitting Second-Order Acyclic Marked Markovian Arrival Processes*,
-IEEE/IFIP Dependable Systems and Networks (DSN), 2013.
-<a href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6575347">Paper</a>
-
+<br>
 Giuliano Casale, Andrea Sansottera, Paolo Cremonesi,
 *Compact Markov-Modulated Models for Multiclass Trace Fitting*,
 European J. of Operational Research, INFORMS, 2016.
 <a href="http://www.sciencedirect.com/science/article/pii/S0377221716304258">Paper</a>
 
-An earlier version of M3A can be found <a href="https://github.com/asansottera/m3a">here</a>.
+<p><b>Funding</b>
+<br>
+This tool has been supported by the <a href="http://www.dice-h2020.eu">Horizon 2020 project DICE</a> 
