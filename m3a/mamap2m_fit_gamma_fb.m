@@ -48,7 +48,7 @@ for j = 1:length(MAPS)
     ERRORS(j) = sum((fF./F - 1).^2) + sum((fB./B - 1).^2);
 end
 [~,BEST] = min(ERRORS);
-fprintf('Fitting MAMAP(2,m) F+B: minimum error is %e\n', ERRORS(BEST));
+%fprintf('Fitting MAMAP(2,m) F+B: minimum error is %e\n', ERRORS(BEST));
 
 MMAP = MMAPS{BEST};
 

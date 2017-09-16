@@ -28,7 +28,7 @@ else
     error('Underlying MAP must be in canonical acyclic form');
 end
 
-fprintf('Fitting MAMAP(2,m) F+B: form = %d\n', form);
+%fprintf('Fitting MAMAP(2,m) F+B: form = %d\n', form);
 
 % number of classes
 k = length(p);
@@ -57,7 +57,7 @@ if (form == 1 && (r1 < degentol || r2 > 1-degentol || abs(h2-h1*r2) < degentol |
    (form == 2 && (r2 > 1-degentol || abs(h1 - h2 + h2*r1) < degentol || abs(h1 - h2 - h1*r1 + h1*r1*r2) < degentol ))
     
     % POISSON PROCESS
-    fprintf('Fitting MAMAP(2,m) F+B: detected Poisson process\n');
+ %   fprintf('Fitting MAMAP(2,m) F+B: detected Poisson process\n');
     
     % return marked poisson process
     h = map_mean(mmap);
@@ -76,7 +76,7 @@ if (form == 1 && (r1 < degentol || r2 > 1-degentol || abs(h2-h1*r2) < degentol |
 elseif (form == 2 && r2 < degentol && abs(1-r1) < degentol)
     
     % DEGENERATE PHASE_TYPE
-    fprintf('Fitting MAMAP(2,m) F+B: detected degenerate phase-type form\n');
+  %  fprintf('Fitting MAMAP(2,m) F+B: detected degenerate phase-type form\n');
     
     % compute parameters of D11,D12,...,D1k
     q = zeros(3,k);
@@ -89,9 +89,9 @@ elseif (form == 2 && r2 < degentol && abs(1-r1) < degentol)
 elseif form == 1 && r2 < degentol
     
     % CANONICAL PHASE_TYPE
-    fprintf('Fitting MAMAP(2,m) F+B: detected canonical phase-type form\n');
+%    fprintf('Fitting MAMAP(2,m) F+B: detected canonical phase-type form\n');
     
-    fprintf('Fitting MAMAP(2,m) F+B: fitting backward\n');
+%    fprintf('Fitting MAMAP(2,m) F+B: fitting backward\n');
     
     % convert to phase-type
     aph = map;
@@ -109,7 +109,7 @@ elseif (form == 1 && abs(1-r1) < degentol) || ...
        (form == 2 && abs(1-r1) < degentol)
     
     % NON-CANONICAL PHASE_TYPE
-    fprintf('Fitting MAMAP(2,m) F+B: detected non-canonical phase-type form\n');
+ %   fprintf('Fitting MAMAP(2,m) F+B: detected non-canonical phase-type form\n');
     
     % coefficients: q(j,c) = F(c) * q_f(j,c) + q_0(j,c)
     q_f = zeros(2,k);
@@ -164,7 +164,7 @@ elseif (form == 1 && abs(1-r1) < degentol) || ...
     fF = solve();
 
     for c = 1:k
-        fprintf('Fitting MAMAP(2,m) F+B: F(%d) = %f -> %f\n', c, F(c), fF(c));
+  %      fprintf('Fitting MAMAP(2,m) F+B: F(%d) = %f -> %f\n', c, F(c), fF(c));
     end
 
     % compute parameters of D11,D12,...,D1k
@@ -180,11 +180,11 @@ elseif (form == 1 && abs(1-r1) < degentol) || ...
 elseif form == 2 && r2 < degentol
     
     % DEGENERATE CASE FOR gamma < 0
-    fprintf('Fitting MAMAP(2,m) F+B: detected degenerate MMAP form\n');
+   % fprintf('Fitting MAMAP(2,m) F+B: detected degenerate MMAP form\n');
     
     if fbWeights(1) >= fbWeights(2)
         
-        fprintf('Fitting MAMAP(2,m) F+B: fitting forward\n');
+    %    fprintf('Fitting MAMAP(2,m) F+B: fitting forward\n');
 
         % coefficients: q(j,c) = F(c) * q_f(j,c) + q_0(j,c)
         q_f = zeros(2,k);
@@ -239,7 +239,7 @@ elseif form == 2 && r2 < degentol
         fF = solve();
 
         for c = 1:k
-            fprintf('Fitting MAMAP(2,m) F+B: F(%d) = %f -> %f\n', c, F(c), fF(c));
+     %       fprintf('Fitting MAMAP(2,m) F+B: F(%d) = %f -> %f\n', c, F(c), fF(c));
         end
 
         % compute parameters of D11,D12,...,D1k
@@ -255,7 +255,7 @@ elseif form == 2 && r2 < degentol
         
     else
         
-        fprintf('Fitting MAMAP(2,m) F+B: fitting backward\n');
+      %  fprintf('Fitting MAMAP(2,m) F+B: fitting backward\n');
     
         % coefficients: q(j,c) = F(c) * q_b(j,c) + q_0(j,c)
         q_b = zeros(2,k);
@@ -310,7 +310,7 @@ elseif form == 2 && r2 < degentol
         fB = solve();
 
         for c = 1:k
-            fprintf('Fitting MAMAP(2,m) F+B: B(%d) = %f -> %f\n', c, B(c), fB(c));
+       %     fprintf('Fitting MAMAP(2,m) F+B: B(%d) = %f -> %f\n', c, B(c), fB(c));
         end
 
         % compute parameters of D11,D12,...,D1k
@@ -413,8 +413,8 @@ else
     end
 
     for c = 1:k
-        fprintf('Fitting MAMAP(2,m) F+B: F(%d) = %f -> %f\n', c, F(c), fF(c));
-        fprintf('Fitting MAMAP(2,m) F+B: B(%d) = %f -> %f\n', c, B(c), fB(c));
+      %  fprintf('Fitting MAMAP(2,m) F+B: F(%d) = %f -> %f\n', c, F(c), fF(c));
+      %  fprintf('Fitting MAMAP(2,m) F+B: B(%d) = %f -> %f\n', c, B(c), fB(c));
     end
 
     % compute parameters of D11,D12,...,D1k
@@ -441,14 +441,14 @@ fF = mmap_forward_moment(mmap, 1);
 fB = mmap_backward_moment(mmap, 1);
 
     function x = solve()
-        fprintf('Fitting MAMAP(2,m) F+B: running quadratic programming solver...\n');
+       % fprintf('Fitting MAMAP(2,m) F+B: running quadratic programming solver...\n');
         options = optimset('Algorithm','interior-point-convex','Display','none','MaxIter',3000);
         [x,fx,xflag] = quadprog(H, h, A, b, Aeq, beq, [], [], [], options);
         if xflag ~= 1
             error('Quadratic programming solver failed: %d\n', xflag);
         end
         fit_error = fx + length(x);
-        fprintf('Fitting MAMAP(2,m) F+B: error = %e\n', fit_error);
+        %fprintf('Fitting MAMAP(2,m) F+B: error = %e\n', fit_error);
     end
 
 end

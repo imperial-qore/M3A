@@ -1,9 +1,11 @@
-function [SCALED] = mmap_scale(MMAP, M)
+function [SCALED] = mmap_scale(MMAP, M, maxIter)
 % Changes the mean inter-arrival time of an MMAP.
 % INPUT
 % - MMAP: MMAP to be scaled
 % - M: new mean
-
+if nargin<3
+    maxIter=30;
+end
 C = length(MMAP)-2;
 if length(M)==1
     
@@ -21,8 +23,16 @@ if length(M)==1
 else
     options = optimset();
     options.Display = 'off';
-    [x] = fminsearch(@(X) objfun(X,M,MMAP), ones(1,C), options);
-    
+    options.tolFun = 1e-2;
+    options.MaxIter = maxIter;
+    SCALED{1} = MMAP{1};
+    SCALED{2} = [];
+    l = mmap_count_lambda(MMAP);
+    for c = 1:C
+        SCALED{2+c} = MMAP{2+c} * (1/M(c))/l(c);
+    end
+    MMAP = mmap_normalize(SCALED);
+    x=fmincon(@(X) objfun(X,M,MMAP),ones(1,C),[],[],[],[],1e-6+zeros(1,C),[],[],options);
     SCALED{1} = MMAP{1};
     SCALED{2} = [];
     for c = 1:C

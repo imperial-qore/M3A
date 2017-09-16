@@ -89,6 +89,12 @@ beq(2) = 1 - m*q2i_const - q2i_ai * a;
 fprintf('Fitting per-class counting process...\n');
 options = optimset('Algorithm','interior-point-convex ',...
                    'Display','none');
+f(~isfinite(f))=0; % remove infnans
+H(~isfinite(H))=0;
+A(~isfinite(A))=0;
+b(~isfinite(b))=0;
+Aeq(~isfinite(Aeq))=0;
+beq(~isfinite(beq))=0;
 [x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
 fit_error = fx + m;
 fprintf('Per-class fitting error: %f\n', fit_error);

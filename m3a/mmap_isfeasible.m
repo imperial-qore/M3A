@@ -18,7 +18,7 @@ end
 % diagonal elements of D0 are < 0
 % non-diagonal elements of D0 are >= 0
 % elements of D1 are >= 0
-TF = map_isfeasible(MMAP,TOL);
+TF = map_isfeasible(MMAP);
 if TF == 0
     return;
 end
