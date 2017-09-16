@@ -1,14 +1,16 @@
-function mtrace = m3a_init(S, C, varargin)
-% mtrace = m3a_init(S,'option1','val1','option2','val2',...)
+function mtrace = m3afit_init(S, C, varargin)
+% mtrace = m3a_init(S, C)
 %
 % DESCRIPTION
 % Prepare multiclass trace S for M3A fitting
+% 
+% INPUT
+% S - inter-arrival times
+% C - class number for each arrival
 %
 % OUTPUT
-% mtrace.S - inter-arrival trace
+% mtrace.S - inter-arrival time trace
 % mtrace.C - arrival class
-%
-% OPTION LIST
 
 %% options
 NumClasses = length(unique(C));
