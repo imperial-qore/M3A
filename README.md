@@ -30,4 +30,4 @@ European J. of Operational Research, INFORMS, 2016.
 
 <p><b>Funding</b>
 <br>
-The development of this tool has been partially supported by the Horizon 2020 project <a href="http://www.dice-h2020.eu">DICE</a>.
+The development of this tool has been supported in part by the Horizon 2020 project <a href="http://www.dice-h2020.eu">DICE</a>.
