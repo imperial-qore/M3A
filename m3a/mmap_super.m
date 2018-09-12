@@ -17,7 +17,6 @@ if nargin < 3
         SUP{end+1} = krons(zeros(n1),MMAPb{2+j});
     end
     SUP = mmap_normalize(SUP);
-
 elseif strcmpi(opt,'match')
     K1 = length(MMAPa);
     K2 = length(MMAPb);
@@ -32,5 +31,4 @@ elseif strcmpi(opt,'match')
 else
     error('unrecognized option');
 end
-
 end

@@ -16,6 +16,7 @@ for i = 1:K
    end
 end
 
+MMAP{2} = 0 *MMAP{2};
 for c = 1:C
    MMAP{2+c}(MMAP{2+c} < 0) = 0; 
    MMAP{2} = MMAP{2} + MMAP{2+c};
