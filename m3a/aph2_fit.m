@@ -21,12 +21,12 @@ if isempty(APHS)
     if isempty(APHS)
         error('Fitting APH(2): feasibility could not be restored');
     else
-        fprintf('Fitting APH(2): %d approximate solutions\n', length(APHS));
-        fprintf('Fitting APH(2): M2 = %f -> %f\n', M2, M2a);
-        fprintf('Fitting APH(2): M3 = %f -> %f\n', M3, M3a);
+%        fprintf('Fitting APH(2): %d approximate solutions\n', length(APHS));
+%        fprintf('Fitting APH(2): M2 = %f -> %f\n', M2, M2a);
+%        fprintf('Fitting APH(2): M3 = %f -> %f\n', M3, M3a);
     end
 else
-    fprintf('Fitting APH(2): %d exact solutions\n', length(APHS));
+%    fprintf('Fitting APH(2): %d exact solutions\n', length(APHS));
 end
 
 APH = APHS{1};

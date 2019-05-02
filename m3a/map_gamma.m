@@ -53,7 +53,7 @@ else
     opt.RobustWgtFun = 'fair';
     try
         [GAMMA,RESIDUALS] = nlinfit(lag, rho, @geometric, 0.99, opt);
-    catch err
+    catch me
         warning('Non linear regression for ACF decay rate failed, trying lsqcurvefit'); 
         GAMMA = lsqcurvefit(@geometric, 0.99, lag, rho, -1, 1);
     end

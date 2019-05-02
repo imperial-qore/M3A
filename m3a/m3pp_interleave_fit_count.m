@@ -52,8 +52,12 @@ uv = zeros(k,1);
 dv = zeros(k,1);
 
 % compute bounds for the upper off-diagonal elment of each mmpp(2)
-for j = 1:k
-    d = compute_d(btv(j), binfv(j), t);
+for j = 1:k    
+    if btv(j) >= binfv(j)
+        d = compute_d(btv(j), binfv(j)*(1+1e-4), t);
+    else
+        d = compute_d(btv(j), binfv(j), t);
+    end
     z = (binfv(j)-1)*d^3*av(j);
     u = d*z/(2*av(j)^2*d^2+z);
     uv(j) = u;
@@ -90,7 +94,7 @@ for o = 1:k
     % get process in o-th position
     j = order(o);
     % fit underlying mmpp(2)
-    tran
+    %tran
     if ~tran(j)
         r1 = r(1,j);
         r2 = r(2,j);

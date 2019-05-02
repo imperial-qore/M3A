@@ -15,7 +15,9 @@ else
     tmp0 = M3^2/9 + ((8*M1^3)/3 - 2*M2*M1)*M3 - 3*M1^2*M2^2 + 2*M2^3;
     if tmp0 < 0
         % infeasible: square root of negative element
-        APHS = {};
+        % APHS = {};
+        % added by GC
+        APHS = {aph_fit(M1,M2,M3,2)};
         return;
     end
 end
@@ -68,5 +70,8 @@ end
 
 % returns 0, 1 or 2 feasible solutions
 APHS = APHS(1:(idx-1));
-
+% added by GC
+if isempty(APHS)
+    APHS = {aph_fit(M1,M2,M3,2)};    
+end
 end

@@ -1,20 +1,30 @@
-function MAP=map_mixture(alpha,MAPs)
+function MMAP=mmap_mixture(alpha,MAPs)
 % probabilistic composition of MAPs - MAP=map_pcompose(P,MAPs)
-D0 = [];
-D1 = [];
-for i = 1:length(MAPs)
-    if i==1        
-        D0 = MAPs{i}{1};
+Dk = {};
+I = length(MAPs);
+for j=1:I+2
+    Dk{j}= [];
+end
+for i = 1:I
+    
+    if i==1
+        Dk{1} = MAPs{i}{1};
     else
-        D0 = blkdiag(D0,MAPs{i}{1});
+        Dk{1} = blkdiag(Dk{1},MAPs{i}{1});
     end
     D1i = alpha(1)*MAPs{i}{2}*e(length(MAPs{i}{2}))*map_pie(MAPs{1});
-    for j=2:length(MAPs)
+    for j=2:I
         D1i = horzcat(D1i,MAPs{i}{2}*alpha(j)*e(length(MAPs{i}{2}))*map_pie(MAPs{j}));
     end
-    D1 = vertcat(D1,D1i);
+    Dk{2} = vertcat(Dk{2},D1i);
+    for j=1:I
+        if i==j
+            Dk{2+j} = vertcat(Dk{2+j},   D1i);
+        else
+            Dk{2+j} = vertcat(Dk{2+j}, 0*D1i);
+        end
+    end
 end
 
-MAP = map_normalize({D0,D1});
-
+MMAP = mmap_normalize(Dk);
 end

@@ -62,7 +62,8 @@ function [r,transpose,order] = compute_feasible_interleave_reorder(uv, dv)
         end
     end
 
-    options = sdpsettings('solver','cbc');
+    %options = sdpsettings('solver','cbc');
+    options = sdpsettings();
     diag = solvesdp(constraints, 0, options);
 
     if diag.problem ~= 0

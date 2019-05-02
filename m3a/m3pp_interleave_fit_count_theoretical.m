@@ -18,7 +18,7 @@ m = size(MMAP,2)-2;
 % by default, quadratic
 if nargin < 4
     delta = 0.75;
-    SIGMA = mmap_count_mcov(MMAP,tinf)
+    SIGMA = mmap_count_mcov(MMAP,tinf);
     pool = 1:m;
     J=1;
     variance = diag(SIGMA);
@@ -35,7 +35,7 @@ if nargin < 4
         J = J+1;
     end
 end
-mapping
+%mapping
 
 % check mapping
 if size(mapping,1) ~= m

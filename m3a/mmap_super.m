@@ -1,6 +1,6 @@
 function SUP = mmap_super(MMAPa,MMAPb,opt)
 % SUP = mmap_super(MMAPa,MMAPb,opt)
-if nargin < 3
+if nargin ==2
     K1 = length(MMAPa)-2;
     K2 = length(MMAPb)-2;
     n1 = length(MMAPa{1});
@@ -17,7 +17,7 @@ if nargin < 3
         SUP{end+1} = krons(zeros(n1),MMAPb{2+j});
     end
     SUP = mmap_normalize(SUP);
-elseif strcmpi(opt,'match')
+elseif nargin ==3 && strcmpi(opt,'match')
     K1 = length(MMAPa);
     K2 = length(MMAPb);
     if K1 ~= K2
@@ -28,6 +28,11 @@ elseif strcmpi(opt,'match')
         SUP{i} = krons(MMAPa{i},MMAPb{i});
     end
     SUP = mmap_normalize(SUP);
+elseif nargin == 1
+    SUP = MMAPa{1};
+    for i=2:length(MMAPa)
+        SUP = mmap_super(SUP,MMAPa{i});
+    end
 else
     error('unrecognized option');
 end

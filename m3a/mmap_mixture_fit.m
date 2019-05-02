@@ -83,31 +83,31 @@ FM{1} = mmap_cross_moment(MMAP,1);
 FM{2} = mmap_cross_moment(MMAP,2);
 FM{3} = mmap_cross_moment(MMAP,3);
 
-for i = 1:m
-    for j = 1:m
-        fprintf('MMAP CROSS(%d,%d): ', i, j);
-        for h = 1:3
-            fprintf('M%d = %.3e (%.3e)', h, FM{h}(i,j), M{h}(i,j));
-            if h < 3
-                fprintf(', ');
-            end
-        end
-        fprintf('\n');
-    end
-end
+% for i = 1:m
+%     for j = 1:m
+%         %fprintf('MMAP CROSS(%d,%d): ', i, j);
+%         for h = 1:3
+%           %  fprintf('M%d = %.3e (%.3e)', h, FM{h}(i,j), M{h}(i,j));
+%             if h < 3
+%                 fprintf(', ');
+%             end
+%         end
+%         fprintf('\n');
+%     end
+% end
 
 FP2 = mmap_sigma2(MMAP);
-for i = 1:m
-    for j = 1:m
-        fprintf('MMAP p(%d,%d,:): ', i, j);
-        for h = 1:m
-            fprintf('p(%d,%d,%d) = %.3e (%.3e)', i, j, h, P2(i,j,h), FP2(i,j,h));
-            if h < m
-                fprintf(', ');
-            end
-        end
-        fprintf('\n');
-    end
-end
+% for i = 1:m
+%     for j = 1:m
+%         %fprintf('MMAP p(%d,%d,:): ', i, j);
+%         for h = 1:m
+%          %   fprintf('p(%d,%d,%d) = %.3e (%.3e)', i, j, h, P2(i,j,h), FP2(i,j,h));
+%             if h < m
+%                 fprintf(', ');
+%             end
+%         end
+%         fprintf('\n');
+%     end
+% end
 
 end % end function

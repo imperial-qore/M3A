@@ -21,7 +21,7 @@ end
 % least error
 MAPHS = cell(1,length(APHS));
 ERRORS = zeros(1,length(APHS));
-for j = 1:length(APHS)
+for j = 1:length(APHS)    
     [MAPHS{j},fB] = maph2m_fit_multiclass(APHS{j}, P, B);
     ERRORS(j) = sum((fB./B - 1).^2);
 end

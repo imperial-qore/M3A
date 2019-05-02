@@ -83,12 +83,12 @@ end
 beq(1) = 1 - m*q1i_const - q1i_ai * a;
 beq(2) = 1 - m*q2i_const - q2i_ai * a;
 
-fprintf('Fitting per-class counting process...\n');
+%fprintf('Fitting per-class counting process...\n');
 options = optimset('Algorithm','interior-point-convex ',...
-                   'Display','final');
+                   'Display','none');
 [x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
 fit_error = fx + m;
-fprintf('Per-class fitting error: %f\n', fit_error);
+%fprintf('Per-class fitting error: %f\n', fit_error);
 
 q = zeros(2,m);
 for i = 1:m
@@ -118,14 +118,14 @@ for i = 1:m
     v2t3 = mmap_count_var(mmap2,t3);
     Dvt3(i) = v2t3(1)-v2t3(2);
 end
-
-for i = 1:m
-    fprintf('Rate class %d: input = %.3f, output = %.3f\n', ...
-            i, ai(i), Ai(i));
-end
-for i = 1:m
-    fprintf('DV%d(t3): input = %.3f, output = %.3f\n', ...
-            i, dvt3(i), Dvt3(i));
-end
+% 
+% for i = 1:m
+%     fprintf('Rate class %d: input = %.3f, output = %.3f\n', ...
+%             i, ai(i), Ai(i));
+% end
+% for i = 1:m
+%     fprintf('DV%d(t3): input = %.3f, output = %.3f\n', ...
+%             i, dvt3(i), Dvt3(i));
+% end
 
 end
