@@ -173,12 +173,12 @@ D1 = FIT{2};
 FIT = {D0, D1, D1 .* [q1 0; 0 q2], D1 .* [(1-q1) 0; 0 (1-q2)]};
 
 % print per-class rates and covariance
-fai = mmap_count_mean(FIT,1);
-for i = 1:m
-    fprintf('Rate class %d: input = %.3f, output = %.3f\n', ...
-            i, ai(i), fai(i));
-end
-fsigma = 1/2*( map_count_var(FIT,t3) - sum(mmap_count_var(FIT,t3)) );
-fprintf('Covariance(t3): input = %.4f, output = %.4f\n', st3, fsigma);
+% fai = mmap_count_mean(FIT,1);
+% for i = 1:m
+%     fprintf('Rate class %d: input = %.3f, output = %.3f\n', ...
+%             i, ai(i), fai(i));
+% end
+% fsigma = 1/2*( map_count_var(FIT,t3) - sum(mmap_count_var(FIT,t3)) );
+% fprintf('Covariance(t3): input = %.4f, output = %.4f\n', st3, fsigma);
 
 end

@@ -6,6 +6,11 @@ for j=1:I+2
     Dk{j}= [];
 end
 for i = 1:I
+    if isempty(MAPs{i})
+        MAPs{i} = map_exponential(1e6);
+    end
+end
+for i = 1:I
     
     if i==1
         Dk{1} = MAPs{i}{1};

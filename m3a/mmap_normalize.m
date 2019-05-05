@@ -16,7 +16,7 @@ for i = 1:K
    end
 end
 
-MMAP{2} = 0 *MMAP{2};
+MMAP{2} = 0 *MMAP{1};
 for c = 1:C
    MMAP{2+c}(MMAP{2+c} < 0) = 0; 
    MMAP{2} = MMAP{2} + MMAP{2+c};
@@ -25,4 +25,5 @@ end
 for k = 1:K
    MMAP{1}(k,k) =  0;
    MMAP{1}(k,k) = -sum(MMAP{1}(k,:)) - sum(MMAP{2}(k,:));
+end
 end

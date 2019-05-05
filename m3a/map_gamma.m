@@ -10,6 +10,7 @@ function [GAMMA, RHO0, RESIDUALS] = map_gamma(MAP, limit)
 
 if nargin < 2
     limit = 1000;
+    lag = 1:(limit/10):limit;    
 end
 
 if length(limit) ~= 1
@@ -37,8 +38,7 @@ else
     VAR = M2-M1^2;
     SCV = VAR/M1^2;
     RHO0 = 1/2 * (1 - 1/SCV);
-
-    lag = 1:limit;
+    
     rho = map_acf(MAP, lag)';
     
     %problem.Variables = 1;

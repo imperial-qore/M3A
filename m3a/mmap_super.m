@@ -1,4 +1,5 @@
 function SUP = mmap_super(MMAPa,MMAPb,opt)
+
 % SUP = mmap_super(MMAPa,MMAPb,opt)
 if nargin ==2
     K1 = length(MMAPa)-2;
@@ -29,6 +30,8 @@ elseif nargin ==3 && strcmpi(opt,'match')
     end
     SUP = mmap_normalize(SUP);
 elseif nargin == 1
+    empty = cellfun(@isempty, MMAPa);
+    MMAPa(empty)=[];    
     SUP = MMAPa{1};
     for i=2:length(MMAPa)
         SUP = mmap_super(SUP,MMAPa{i});
