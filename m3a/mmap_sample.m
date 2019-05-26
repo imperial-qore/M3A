@@ -1,4 +1,4 @@
-function [T,A,LAST,FIRST] = mmap_sample(MMAP, nSamples, pi, seed)
+function [T,A,LAST,FIRST,STS] = mmap_sample(MMAP, nSamples, pi, seed)
 % Generates samples from a Marked MAP.
 % Input:
 %  - MMAP: representation of the Marked MAP
@@ -11,6 +11,8 @@ function [T,A,LAST,FIRST] = mmap_sample(MMAP, nSamples, pi, seed)
 if (nargin < 3)
    pi = map_pie(MMAP); 
 end
+LAST=[];
+FIRST=[];
 
 % check if single-class
 % MAP has two matrices
@@ -90,7 +92,9 @@ for p = 1:M
     timeBatch{p}=[];
     tranBatch{p}=[];
 end
+STS = zeros(nSamples,1);
 while h <= nSamples
+    STS(h) = s;
     % regenerate exponential batch if needed
     if (h == 1 || batchCounter(s) > batchSize(s))
         batchSize(s)=min(100,nSamples-h+1);
@@ -135,7 +139,7 @@ while h <= nSamples
         s=sNext;
         % next sample
         h=h+1;
-    end
+    end    
 end
 
 end
