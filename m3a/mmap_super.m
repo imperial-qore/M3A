@@ -1,7 +1,8 @@
 function SUP = mmap_super(MMAPa,MMAPb,opt)
 
 % SUP = mmap_super(MMAPa,MMAPb,opt)
-if nargin ==2
+if nargin ==2 || (nargin ==3 && strcmpi(opt,'default'))
+    % each class in MMAPa and MMAPb is a distinct class in SUP
     K1 = length(MMAPa)-2;
     K2 = length(MMAPb)-2;
     n1 = length(MMAPa{1});
@@ -19,6 +20,7 @@ if nargin ==2
     end
     SUP = mmap_normalize(SUP);
 elseif nargin ==3 && strcmpi(opt,'match')
+    % class c in both MMAPa and MMAPb is mapped both into class c of SUP
     K1 = length(MMAPa);
     K2 = length(MMAPb);
     if K1 ~= K2

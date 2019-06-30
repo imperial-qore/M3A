@@ -1,5 +1,8 @@
 function MMAP = mmap_exponential(lambda, n)
 % fits a order-n MMAP with given arrival rates lambda
+if nargin < 2
+    n = 1;
+end
 K = length(lambda);
 MMAP = cell(1,2+K);
 MMAP{1} = zeros(n);

@@ -158,7 +158,10 @@ end
     function x = solve()
         fprintf('Fitting MAPH(2,m): running quadratic programming solver...\n');
         options = optimset('Algorithm','interior-point-convex','Display','none');
-        [x,fx,xflag] = quadprog(H, h, A, b, Aeq, beq, [], [], [], options);
+        %[x,fx,xflag] = quadprog(H, h, A, b, Aeq, beq, [], [], [], options);
+        lb = 1e-6*ones( size(A,2),1);
+        ub = 1e6*ones( size(A,2),1);
+        [x,fx,xflag]=QP(H, h, A, b, Aeq, beq, lb, ub, options);        
         if xflag ~= 1
             error('Quadratic programming solver failed: %d\n', exit);
         end

@@ -1,6 +1,6 @@
 function [FIT] = m3pp2m_fit_count_approx(a, bt1, bt2, binf, m3t2, ...
-                                         t1, t2, ...
-                                         ai, dvt3, t3)
+    t1, t2, ...
+    ai, dvt3, t3)
 % Fits a second-order Marked MMPP.
 % a: arrival rate
 % bt1: IDC at scale t1
@@ -62,7 +62,7 @@ H = zeros(m, m);
 f = zeros(m, 1);
 for i = 1:m
     H(i,i) = 2/dvt3(i)^2;
-    f(i) = -2/dvt3(i); 
+    f(i) = -2/dvt3(i);
 end
 
 A = zeros(2*m,m);
@@ -85,9 +85,12 @@ beq(2) = 1 - m*q2i_const - q2i_ai * a;
 
 %fprintf('Fitting per-class counting process...\n');
 options = optimset('Algorithm','interior-point-convex ',...
-                   'Display','none');
-[x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
-fit_error = fx + m;
+    'Display','none');
+%[x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
+lb = 1e-6*ones( size(A,2),1);
+ub = 1e6*ones( size(A,2),1);
+[x,fx]=QP(H, h, A, b, Aeq, beq, lb, ub, options);
+%fit_error = fx + m;
 %fprintf('Per-class fitting error: %f\n', fit_error);
 
 q = zeros(2,m);
@@ -118,7 +121,7 @@ for i = 1:m
     v2t3 = mmap_count_var(mmap2,t3);
     Dvt3(i) = v2t3(1)-v2t3(2);
 end
-% 
+%
 % for i = 1:m
 %     fprintf('Rate class %d: input = %.3f, output = %.3f\n', ...
 %             i, ai(i), Ai(i));

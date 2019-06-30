@@ -37,7 +37,7 @@ end
 
 % just a single class!
 if m == 1
-    FIT = {FIT{1},FIT{2},FIT{2}}; 
+    FIT = {FIT{1},FIT{2},FIT{2}};
     return;
 end
 
@@ -65,7 +65,7 @@ H = zeros(m, m);
 f = zeros(m, 1);
 for i = 1:m
     H(i,i) = 2/gt3(i)^2;
-    f(i) = -2/gt3(i); 
+    f(i) = -2/gt3(i);
 end
 
 A = zeros(2*m,m);
@@ -88,14 +88,17 @@ beq(2) = 1 - m*q2i_const - q2i_ai * a;
 
 fprintf('Fitting per-class counting process...\n');
 options = optimset('Algorithm','interior-point-convex ',...
-                   'Display','none');
+    'Display','none');
 f(~isfinite(f))=0; % remove infnans
 H(~isfinite(H))=0;
 A(~isfinite(A))=0;
 b(~isfinite(b))=0;
 Aeq(~isfinite(Aeq))=0;
 beq(~isfinite(beq))=0;
-[x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
+%[x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
+lb = zeros( size(A,2),1);
+ub = 1e6*ones( size(A,2),1);
+[x,fx]=QP(H, h, A, b, Aeq, beq, lb, ub, options);
 fit_error = fx + m;
 fprintf('Per-class fitting error: %f\n', fit_error);
 
@@ -118,7 +121,7 @@ end
 
 if ~mmap_isfeasible(FIT)
     FIT{:}
-   warning('Infeasible fitted M3PP');
+    warning('Infeasible fitted M3PP');
 end
 
 Ai = mmap_count_mean(FIT,1);
@@ -132,11 +135,11 @@ end
 
 for i = 1:m
     fprintf('Rate class %d: input = %.4f, output = %.4f\n', ...
-            i, ai(i), Ai(i));
+        i, ai(i), Ai(i));
 end
 for i = 1:m
     fprintf('g%d(t3): input = %.4f, output = %.4f\n', ...
-            i, gt3(i), Gt3(i));
+        i, gt3(i), Gt3(i));
 end
 
 end

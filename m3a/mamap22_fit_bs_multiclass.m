@@ -1,7 +1,7 @@
 function [mmap,fB,fS,exact] = mamap22_fit_bs_multiclass(map,p,B,S,classWeights,bsWeights,adjust)
 % Performs approximate fitting of a MMAP given the underlying AMAP(2),
 % the class probabilities (always fitted exactly), the backward moments,
-% and the one-step class transition probabilities. 
+% and the one-step class transition probabilities.
 % Input
 % - map:  second-order AMAP underlying the MAMAP[2]
 % - p:    vector of class probabilities
@@ -16,7 +16,7 @@ function [mmap,fB,fS,exact] = mamap22_fit_bs_multiclass(map,p,B,S,classWeights,b
 % - fS:   vector of optimal feasible class transition probabilities
 
 if (size(map{1},1) ~= 2)
-	error('Underlying MAP must be of second-order.');
+    error('Underlying MAP must be of second-order.');
 end
 if (map{1}(2,1) ~= 0)
     error('Underlying MAP must be acyclic');
@@ -39,7 +39,7 @@ end
 
 % default weights to use in the objective function
 if nargin < 5 || isempty(classWeights)
-	classWeights = ones(k,1);
+    classWeights = ones(k,1);
 end
 if nargin < 6 || isempty(bsWeights)
     bsWeights = ones(2,1);
@@ -76,7 +76,7 @@ end
 exact = 0;
 
 if (form == 1 && (r1 < degentol || r2 > 1-degentol || abs(h2-h1*r2) < degentol )) || ...
-   (form == 2 && (r2 > 1-degentol || abs(h1 - h2 - h1*r1 + h1*r1*r2) < degentol ))
+        (form == 2 && (r2 > 1-degentol || abs(h1 - h2 - h1*r1 + h1*r1*r2) < degentol ))
     
     % TODO: transform into a valid second-order Poisson process
     
@@ -106,7 +106,7 @@ elseif form == 2 && r2 < degentol && abs(1-r1) < degentol
     q1 = p(1);
     q2 = p(1);
     q3 = p(1);
-   
+    
 elseif form == 1 && r2 < degentol
     
     % CANONICAL PHASE_TYPE
@@ -116,16 +116,16 @@ elseif form == 1 && r2 < degentol
     aph = map;
     aph{2}(2,2) = 0;
     aph = map_normalize(aph);
-        
+    
     mmap = maph2m_fit_multiclass(aph, p, B, classWeights);
     
     fB = mmap_backward_moment(mmap, 1);
     fS = mmap_sigma(mmap);
     
     return;
-
+    
 elseif (form == 1 && abs(1-r1) < degentol) || ...
-       (form == 2 && abs(1-r1) < degentol)
+        (form == 2 && abs(1-r1) < degentol)
     
     % NON-CANONICAL PHASE_TYPE
     fprintf('Fitting MAMAP(2,2) B+S: detected non-canonical phase-type form, converting to canonical form\n');
@@ -197,7 +197,7 @@ elseif form == 2 && r2 < degentol
     end
     
 else
-
+    
     % FULL FORM or "GOOD" poisson process
     
     if (form == 1 && abs(h1 - h2 + h2*r1) < degentol) || (form == 2 && abs(h1 - h2 + h2*r1) < degentol)
@@ -210,31 +210,31 @@ else
     tol = 1e-6;
     
     yalmip_nonlinear_opt = sdpsettings(...
-            'verbose',2,...
-            'solver','bmibnb',...
-            'debug',0,...
-            'showprogress',0,...
-            'usex0',1,...
-            'bmibnb.relgaptol',1e-3,...
-            'bmibnb.absgaptol',1e-6,...
-            'bmibnb.maxiter',1000,...
-            'bmibnb.lowrank', 1,...
-            'bmibnb.lpreduce',1,... % without this, crappy lower bounds for some problems
-            'bmibnb.pdtol',-1e-8,... % x >= if x > -pdtol
-            'bmibnb.eqtol',+1e-10,... % x == 0 if abs(x) < +eqtol
-            'bmibnb.roottight',1,...
-            'bmibnb.uppersolver','fmincon-standard',...
-            'fmincon.Algorithm','sqp',...
-            'fmincon.TolCon',1e-6,...
-            'fmincon.TolX',1e-6,...
-            'fmincon.GradObj','on',...
-            'fmincon.GradConstr','on',...
-            'fmincon.Hessian','off',...
-            'fmincon.LargeScale','off');
-        
+        'verbose',2,...
+        'solver','bmibnb',...
+        'debug',0,...
+        'showprogress',0,...
+        'usex0',1,...
+        'bmibnb.relgaptol',1e-3,...
+        'bmibnb.absgaptol',1e-6,...
+        'bmibnb.maxiter',1000,...
+        'bmibnb.lowrank', 1,...
+        'bmibnb.lpreduce',1,... % without this, crappy lower bounds for some problems
+        'bmibnb.pdtol',-1e-8,... % x >= if x > -pdtol
+        'bmibnb.eqtol',+1e-10,... % x == 0 if abs(x) < +eqtol
+        'bmibnb.roottight',1,...
+        'bmibnb.uppersolver','fmincon-standard',...
+        'fmincon.Algorithm','sqp',...
+        'fmincon.TolCon',1e-6,...
+        'fmincon.TolX',1e-6,...
+        'fmincon.GradObj','on',...
+        'fmincon.GradConstr','on',...
+        'fmincon.Hessian','off',...
+        'fmincon.LargeScale','off');
+    
     % constants
     M1 = map_mean(map);
-
+    
     if isfeasible(q1) && isfeasible(q2) && isfeasible(q3)
         fprintf('Fitting MAMAP(2,2) B+S: exact fit found\n');
         exact = 1;
@@ -268,7 +268,7 @@ fS = mmap_sigma(mmap);
     function feas = isfeasible(q)
         feas = q >= -feastol && q <= (1+feastol);
     end
-    
+
     function qfix = fix(q)
         qfix = max(min(q,1),0);
     end
@@ -351,7 +351,7 @@ fS = mmap_sigma(mmap);
         
     end
 
-    % used for non-degenerate cases: hybrid space
+% used for non-degenerate cases: hybrid space
     function [feas,bobj,bB1,bS11] = solve_nonlinear_hybrid(side)
         vB1 = sdpvar(1,1);
         vS11 = sdpvar(1,1);
@@ -400,13 +400,17 @@ fS = mmap_sigma(mmap);
 
     function obj = make_objective(vB1, vS11)
         obj = classWeights(1) * bsWeights(1) * (vB1/B(1) - 1)^2 + ...
-              classWeights(1) * bsWeights(2) * (vS11/S(1,1) - 1)^2;
+            classWeights(1) * bsWeights(2) * (vS11/S(1,1) - 1)^2;
     end
 
     function x = solve_quadprog()
         fprintf('Fitting MAMAP(2,2) B+S: running quadratic programming solver...\n');
         options = optimset('Algorithm','interior-point-convex','Display','none');
-        [x,fx,xflag] = quadprog(H, h, A, b, [], [], [], [], [], options);
+        %[x,fx,xflag] = quadprog(H, h, A, b, [], [], [], [], [], options);
+        lb = 1e-6*ones( size(A,2),1);
+        ub = 1e6*ones( size(A,2),1);
+        [x,fx,xflag]=QP(H, h, A, b, Aeq, beq, lb, ub, options);
+        
         if xflag ~= 1
             error('Quadratic programming solver failed: %d\n', exit);
         end

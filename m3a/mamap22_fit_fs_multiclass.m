@@ -1,7 +1,7 @@
 function [mmap,fF,fS,exact] = mamap22_fit_fs_multiclass(map,p,F,S,classWeights,fsWeights,adjust)
 % Performs approximate fitting of a MMAP given the underlying AMAP(2),
 % the class probabilities (always fitted exactly), the forward moments,
-% and the one-step class transition probabilities. 
+% and the one-step class transition probabilities.
 % Input
 % - map:  second-order AMAP underlying the MAMAP[2]
 % - p:    vector of class probabilities
@@ -16,7 +16,7 @@ function [mmap,fF,fS,exact] = mamap22_fit_fs_multiclass(map,p,F,S,classWeights,f
 % - fS:   vector of optimal feasible class transition probabilities
 
 if (size(map{1},1) ~= 2)
-	error('Underlying MAP must be of second-order.');
+    error('Underlying MAP must be of second-order.');
 end
 if (map{1}(2,1) ~= 0)
     error('Underlying MAP must be acyclic');
@@ -39,7 +39,7 @@ end
 
 % default weights to use in the objective function
 if nargin < 5 || isempty(classWeights)
-	classWeights = ones(k,1);
+    classWeights = ones(k,1);
 end
 if nargin < 6 || isempty(fsWeights)
     fsWeights = ones(2,1);
@@ -76,7 +76,7 @@ end
 exact = 0;
 
 if (form == 1 && (r1 < degentol || r2 > 1-degentol || abs(h1 - h2 + h2*r1) < degentol )) || ...
-   (form == 2 && (r2 > 1-degentol || abs(h1 - h2 + h2*r1) < degentol ))
+        (form == 2 && (r2 > 1-degentol || abs(h1 - h2 + h2*r1) < degentol ))
     
     % TODO: transform into a valid second-order Poisson process
     
@@ -106,7 +106,7 @@ elseif form == 2 && r2 < degentol && abs(1-r1) < degentol
     q1 = p(1);
     q2 = p(1);
     q3 = p(1);
-   
+    
 elseif form == 1 && r2 < degentol
     
     % CANONICAL PHASE_TYPE
@@ -132,9 +132,9 @@ elseif form == 1 && r2 < degentol
     fS = mmap_sigma(mmap);
     
     return;
-
+    
 elseif (form == 1 && abs(1-r1) < degentol) || ...
-       (form == 2 && abs(1-r1) < degentol)
+        (form == 2 && abs(1-r1) < degentol)
     
     % NON-CANONICAL PHASE_TYPE
     fprintf('Fitting MAMAP(2,2) F+S: detected non-canonical phase-type form\n');
@@ -234,7 +234,7 @@ elseif form == 2 && r2 < degentol
     end
     
 else
-
+    
     % FULL FORM or "GOOD" poisson process
     
     if (form == 1 && abs(h2-h1*r2) < degentol) || (form == 2 && abs(h1 - h2 - h1*r1 + h1*r1*r2) < degentol)
@@ -252,31 +252,31 @@ else
     %optim_space = 'char';
     
     yalmip_nonlinear_opt = sdpsettings(...
-            'verbose',2,...
-            'solver','bmibnb',...
-            'debug',0,...
-            'showprogress',0,...
-            'usex0',1,...
-            'bmibnb.relgaptol',1e-3,...
-            'bmibnb.absgaptol',1e-6,...
-            'bmibnb.maxiter',1000,...
-            'bmibnb.lowrank', 1,...
-            'bmibnb.lpreduce',1,... % without this, crappy lower bounds for some problems
-            'bmibnb.pdtol',-1e-8,... % x >= if x > -pdtol
-            'bmibnb.eqtol',+1e-10,... % x == 0 if abs(x) < +eqtol
-            'bmibnb.roottight',1,...
-            'bmibnb.uppersolver','fmincon-standard',...
-            'fmincon.Algorithm','sqp',...
-            'fmincon.TolCon',1e-6,...
-            'fmincon.TolX',1e-6,...
-            'fmincon.GradObj','on',...
-            'fmincon.GradConstr','on',...
-            'fmincon.Hessian','off',...
-            'fmincon.LargeScale','off');
+        'verbose',2,...
+        'solver','bmibnb',...
+        'debug',0,...
+        'showprogress',0,...
+        'usex0',1,...
+        'bmibnb.relgaptol',1e-3,...
+        'bmibnb.absgaptol',1e-6,...
+        'bmibnb.maxiter',1000,...
+        'bmibnb.lowrank', 1,...
+        'bmibnb.lpreduce',1,... % without this, crappy lower bounds for some problems
+        'bmibnb.pdtol',-1e-8,... % x >= if x > -pdtol
+        'bmibnb.eqtol',+1e-10,... % x == 0 if abs(x) < +eqtol
+        'bmibnb.roottight',1,...
+        'bmibnb.uppersolver','fmincon-standard',...
+        'fmincon.Algorithm','sqp',...
+        'fmincon.TolCon',1e-6,...
+        'fmincon.TolX',1e-6,...
+        'fmincon.GradObj','on',...
+        'fmincon.GradConstr','on',...
+        'fmincon.Hessian','off',...
+        'fmincon.LargeScale','off');
     
     % constants
     M1 = map_mean(map);
-
+    
     if isfeasible(q1) && isfeasible(q2) && isfeasible(q3)
         fprintf('Fitting MAMAP(2,2) F+S: exact fit found\n');
         exact = 1;
@@ -310,7 +310,7 @@ fS = mmap_sigma(mmap);
     function feas = isfeasible(q)
         feas = q >= -feastol && q <= (1+feastol);
     end
-    
+
     function qfix = fix(q)
         qfix = max(min(q,1),0);
     end
@@ -360,7 +360,7 @@ fS = mmap_sigma(mmap);
     end
 
     function [pexp,pFexp,Sexp] = get_characteristics(q1,q2,q3)
-       if form == 1
+        if form == 1
             pexp = G(1)*q1+G(2)*q2+G(3)*q3;
             pFexp = G(13)*q1+G(14)*q2+G(15)*q3;
             Sexp = G(4)*q1^2 + G(5)*q1*q2 + G(6)*q1*q3 + G(7)*q2^2 + G(8)*q2*q3 + G(9)*q3^2;
@@ -368,7 +368,7 @@ fS = mmap_sigma(mmap);
             pexp = E(1)*q1+E(2)*q2+E(3)*q3;
             pFexp = (E(12)*q1+E(13)*q2+E(14)*q3);
             Sexp = E(4)*q1*q2 + E(5)*q1*q3 + E(6)*q2^2 + E(7)*q2*q3 + E(8)*q3^2;
-        end 
+        end
     end
 
     function opt = get_yalmip_linear_options()
@@ -390,7 +390,7 @@ fS = mmap_sigma(mmap);
             elseif strcmp(optim_space, 'char')
                 solve_nonlinear_func = @solve_nonlinear_char;
             else
-                 error('Fitting MAMAP(2,2) F+S: invalid value for option "optim_space"');
+                error('Fitting MAMAP(2,2) F+S: invalid value for option "optim_space"');
             end
             % trivial solution
             eobj = make_objective(M1, p(1)^2);
@@ -422,13 +422,13 @@ fS = mmap_sigma(mmap);
                 obj = robj;
                 [q1,q2,q3] = fit(rF1, rS11);
             end
-        end 
+        end
         
     end
 
-    % used for non-degenerate cases: parmeter space
+% used for non-degenerate cases: parmeter space
     function [q1,q2,q3,obj] = solve_nonlinear_param()
-       % find initial feasible solution
+        % find initial feasible solution
         vq = sdpvar(3,1);
         z = sdpvar(2,1);
         % define expressions
@@ -438,12 +438,12 @@ fS = mmap_sigma(mmap);
         cstr_tighten_F = -z(1) <= (pFexp - p(1)*F(1))/(p(1)*F(1)) <= z(1);
         cstr_tighten_S = -z(2) <= (Sexp - S(1,1))/S(1,1) <= z(2);
         cstr = [0 <= vq(1) <= 1, ...
-                0 <= vq(2) <= 1, ...
-                0 <= vq(3) <= 1, ...
-                cstr_exact_p, ...
-                cstr_tighten_F,...
-                cstr_tighten_S,...
-                z(1) >= 0, z(2) >= 0];
+            0 <= vq(2) <= 1, ...
+            0 <= vq(3) <= 1, ...
+            cstr_exact_p, ...
+            cstr_tighten_F,...
+            cstr_tighten_S,...
+            z(1) >= 0, z(2) >= 0];
         % set objective
         zobj = fsWeights(1) * z(1)^2 + fsWeights(2) * z(2)^2;
         % run solver
@@ -459,10 +459,10 @@ fS = mmap_sigma(mmap);
             fname = tempname;
             save(fname,'map','p','F','S');
             error('Fitting MAMAP(2,2) F+S: solver (parameter space) error: %s, input saved to %s\n', zsol.info, fname);
-        end 
+        end
     end
 
-    % used for non-degenerate cases: hybrid space
+% used for non-degenerate cases: hybrid space
     function [feas,bobj,bF1,bS11] = solve_nonlinear_hybrid(side)
         vF1 = sdpvar(1,1);
         vS11 = sdpvar(1,1);
@@ -509,7 +509,7 @@ fS = mmap_sigma(mmap);
         end
     end
 
-    % used for non-degenerate cases: hybrid space with z variable and implicit vS11
+% used for non-degenerate cases: hybrid space with z variable and implicit vS11
     function [feas,bobj,bF1,bS11] = solve_nonlinear_hybrid_z(side)
         vF1 = sdpvar(1,1);
         z = sdpvar(1,1);
@@ -556,7 +556,7 @@ fS = mmap_sigma(mmap);
         end
     end
 
-    % used for non-degenerate cases: characteristic space
+% used for non-degenerate cases: characteristic space
     function [feas,bobj,bF1,bS11] = solve_nonlinear_char(side)
         is_left = 0;
         if strcmp(side,'left')
@@ -575,18 +575,18 @@ fS = mmap_sigma(mmap);
             % set constraints
             if is_left
                 cstr_side = pFexp <= pexp*(M1-tol);
-            else 
+            else
                 cstr_side = pFexp >= pexp*(M1+tol);
             end
             cstr_exact_p = pexp == p(1);
             cstr_tighten = -z <= pFexp-p(1)*F(1) <=z;
             fcstr = [0 <= vq(1) <= 1, ...
-                     0 <= vq(2) <= 1, ...
-                     0 <= vq(3) <= 1, ...
-                     cstr_exact_p, ...
-                     cstr_side,...
-                     cstr_tighten,...
-                     z >= 0];
+                0 <= vq(2) <= 1, ...
+                0 <= vq(3) <= 1, ...
+                cstr_exact_p, ...
+                cstr_side,...
+                cstr_tighten,...
+                z >= 0];
             % run linear programming solver
             lsol = solvesdp(fcstr,z, get_yalmip_linear_options());
             % check output
@@ -655,7 +655,7 @@ fS = mmap_sigma(mmap);
 
     function obj = make_objective(vF1, vS11)
         obj = classWeights(1) * fsWeights(1) * (vF1/F(1) - 1)^2 + ...
-              classWeights(1) * fsWeights(2) * (vS11/S(1,1) - 1)^2;
+            classWeights(1) * fsWeights(2) * (vS11/S(1,1) - 1)^2;
     end
 
     function [q1n,q1d,q2n,q2d,q3] = make_q_can1(p, vF1, vS11)
@@ -692,7 +692,7 @@ fS = mmap_sigma(mmap);
         
         scale = 1/abs(U(5));
         %scale = 1/abs(q2d{M1-tol});
-
+        
         % left constraints: F(1) < M1
         q1lb = q1n >= 0;
         q1ub = q1n <= q1d;
@@ -706,7 +706,7 @@ fS = mmap_sigma(mmap);
             q2ub = scale*(q2n) >= scale*(q2d);
         end
         F1bound = vF1 <= M1-tol;
-        lcstr = [q1lb,q1ub,q2lb,q2ub,q3lb,q3ub,F1bound,vS11 >= 0, vS11 <= 1]; 
+        lcstr = [q1lb,q1ub,q2lb,q2ub,q3lb,q3ub,F1bound,vS11 >= 0, vS11 <= 1];
         
         % right constraints: F(1) > M1
         q1lb = q1n <= 0;
@@ -748,7 +748,7 @@ fS = mmap_sigma(mmap);
     end
 
     function [lcstr,rcstr] = make_constraints_can2(p, vF1, vS11)
-       
+        
         % get fitting expressions
         [q1n,q1d,q2,q3n,q3d] = make_q_can2(p, vF1, vS11);
         
@@ -757,7 +757,7 @@ fS = mmap_sigma(mmap);
         q2ub = q2 <= 1;
         
         scale = 1/abs(V(5));
-        %scale = 1/abs(q3d{M1-tol});        
+        %scale = 1/abs(q3d{M1-tol});
         
         % left constraints: F1 < M1
         q1lb = q1n <= 0;
@@ -786,11 +786,15 @@ fS = mmap_sigma(mmap);
         rcstr = [q1lb,q1ub,q2lb,q2ub,q3lb,q3ub,F1bound,vS11 >= 0, vS11 <= 1];
     end
 
-    % used for degenerate case
+% used for degenerate case
     function x = solve_quadprog()
         fprintf('Fitting MAMAP(2,2) F+S: running quadratic programming solver...\n');
         options = optimset('Algorithm','interior-point-convex','Display','none');
-        [x,fx,xflag] = quadprog(H, h, A, b, [], [], [], [], [], options);
+        %[x,fx,xflag] = quadprog(H, h, A, b, [], [], [], [], [], options);
+        lb = 1e-6*ones( size(A,2),1);
+        ub = 1e6*ones( size(A,2),1);
+        [x,fx,xflag]=QP(H, h, A, b, Aeq, beq, lb, ub, options);
+        
         if xflag ~= 1
             error('Quadratic programming solver failed: %d\n', exit);
         end
