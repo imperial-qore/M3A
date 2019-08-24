@@ -17,15 +17,10 @@ options = struct('Algorithm', 'active-set', ...
 % l1, l2, r1, r2 (rate is fitted exactly)
 x0 = [a*3/4, a*3/2, 1/3, 2/3];
 lb = [1e-6, 1e-6, 0, 0];
-ub = [inf, inf, inf, inf];
+ub = [Inf, Inf, Inf, Inf];
 %fprintf('Fitting unified counting process...\n');
 %if strcmp(method_d0d1,'fmincon') == 1
-[xopt,fxopt] = fminsearchbnd(@compute_obj, ...
-    x0, ...
-    [], [], ... % linear inequalities
-    [], [], ... % linear equalities
-    lb, ub, ... % bounds
-    [], options);
+[xopt,fxopt] = fminbnd(@(x) compute_obj(x), lb, ub, options);
 %fprintf('Unified fitting error: %f\n', fxopt);
 FIT = assemble_mmap(xopt);
 % elseif strcmp(method_d0d1,'gs_fmincon') == 1

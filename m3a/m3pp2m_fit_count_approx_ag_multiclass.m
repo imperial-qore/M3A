@@ -95,10 +95,10 @@ A(~isfinite(A))=0;
 b(~isfinite(b))=0;
 Aeq(~isfinite(Aeq))=0;
 beq(~isfinite(beq))=0;
-%[x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
+[x,fx] = quadprog(H, f, A, b, Aeq, beq, [], [], [], options);
 lb = zeros( size(A,2),1);
 ub = 1e6*ones( size(A,2),1);
-[x,fx]=QP(H, h, A, b, Aeq, beq, lb, ub, options);
+%[x,fx]=QP(H, f, A, b, Aeq, beq, lb, ub, options)
 fit_error = fx + m;
 fprintf('Per-class fitting error: %f\n', fit_error);
 
