@@ -73,12 +73,15 @@ fmt2 = map_count_moment(FIT,t2,1:3);
         factor = a/xa;
         
         xbt1 = (r1*(2*l1^2*r2^2*t1*factor - 2*l2^2*r2 - 2*l1^2*r2 + 2*l2^2*r2^2*t1*factor + 4*l1*l2*r2 + 2*l1^2*r2*exp(- r1*t1*factor - r2*t1*factor) + 2*l2^2*r2*exp(- r1*t1*factor - r2*t1*factor) - 4*l1*l2*r2^2*t1*factor - 4*l1*l2*r2*exp(- r1*t1*factor - r2*t1*factor)) + r1^2*(2*r2*t1*factor*l1^2 - 4*r2*t1*factor*l1*l2 + 2*r2*t1*factor*l2^2))/(t1*factor*(r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
-        xbt2 = (r1*(2*l1^2*r2^2*t2*factor - 2*l2^2*r2 - 2*l1^2*r2 + 2*l2^2*r2^2*t2*factor + 4*l1*l2*r2 + 2*l1^2*r2*exp(- r1*t2*factor - r2*t2*factor) + 2*l2^2*r2*exp(- r1*t2*factor - r2*t2*factor) - 4*l1*l2*r2^2*t2*factor - 4*l1*l2*r2*exp(- r1*t2*factor - r2*t2*factor)) + r1^2*(2*r2*t2*factor*l1^2 - 4*r2*t2*factor*l1*l2 + 2*r2*t2*factor*l2^2))/(t2*factor*(r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
-       
+        
+        if (t1 ~= t2)
+            xbt2 = (r1*(2*l1^2*r2^2*t2*factor - 2*l2^2*r2 - 2*l1^2*r2 + 2*l2^2*r2^2*t2*factor + 4*l1*l2*r2 + 2*l1^2*r2*exp(- r1*t2*factor - r2*t2*factor) + 2*l2^2*r2*exp(- r1*t2*factor - r2*t2*factor) - 4*l1*l2*r2^2*t2*factor - 4*l1*l2*r2*exp(- r1*t2*factor - r2*t2*factor)) + r1^2*(2*r2*t2*factor*l1^2 - 4*r2*t2*factor*l1*l2 + 2*r2*t2*factor*l2^2))/(t2*factor*(r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
+        end
+        
         xbinf = ((2*r2*l1^2 - 4*r2*l1*l2 + 2*r2*l2^2)*r1^2 + (2*l1^2*r2^2 - 4*l1*l2*r2^2 + 2*l2^2*r2^2)*r1)/((r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
         
         t = t2*factor;
-         d = r1+r2;
+        d = r1+r2;
         p = (l1-l2)*(r1-r2);
         xg3t = xa^3*t^3 + ...
             3*xa^2*(xbinf-1)*t^2 + ...
@@ -90,7 +93,9 @@ fmt2 = map_count_moment(FIT,t2,1:3);
         obj = 0;
         obj = obj + (xa/a-1)^2;
         obj = obj + (xbt1/bt1-1)^2;
-        obj = obj + (xbt2/bt2-1)^2;
+        if t1 ~= t2
+            obj = obj + (xbt2/bt2-1)^2;
+        end
         obj = obj + (xbinf/binf-1)^2;
         obj = obj + (xm3t2/m3t2-1)^2;
         
