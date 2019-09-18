@@ -9,20 +9,28 @@ function [FIT] = mmpp2_fit_count_approx(a, bt1, bt2, binf, m3t2, ...
 % t1: first time scale
 % t2: second time scale
 
-%method_d0d1 = 'exact';
+x1 = optimvar('x1'); % l1
+x2 = optimvar('x2'); % l2
+x3 = optimvar('x3'); % r1
+x4 = optimvar('x4'); % r2
 
-options = struct('Algorithm', 'active-set', ...
-    'Display', 'none', ...
-    'MaxFunEvals', 100000);
-% l1, l2, r1, r2 (rate is fitted exactly)
-x0 = [a*3/4, a*3/2, 1/3, 2/3];
-lb = [1e-6, 1e-6, 0, 0];
-ub = [Inf, Inf, Inf, Inf];
-%fprintf('Fitting unified counting process...\n');
-%if strcmp(method_d0d1,'fmincon') == 1
-[xopt,fxopt] = fminbnd(@(x) compute_obj(x), lb, ub, options);
+obj = fcn2optimexpr(@compute_obj, x1,x2,x3,x4, 'OutputSize', [1,1]);
+prob = optimproblem('Objective',obj);
+
+prob.Constraints.c1 = x1>=1e-6;
+prob.Constraints.c2 = x2>=1e-6;
+prob.Constraints.c3 = x3>=0;
+prob.Constraints.c4 = x4>=0;
+
+guess = struct;
+guess.x1 = a*3/4;
+guess.x2 = a*3/2;
+guess.x3 = 1/3;
+guess.x4 = 2/3;
+[xopt, fxopt] = solve(prob, guess);
+
 %fprintf('Unified fitting error: %f\n', fxopt);
-FIT = assemble_mmap(xopt);
+FIT = assemble_mmap(xopt.x1, xopt.x2, xopt.x3, xopt.x4);
 % elseif strcmp(method_d0d1,'gs_fmincon') == 1
 %     problem = createOptimProblem('fmincon', ...
 %                                  'objective', @compute_obj, ...
@@ -59,52 +67,20 @@ fmt2 = map_count_moment(FIT,t2,1:3);
 %fprintf('IDC(inf): input = %.3f, output = %.3f\n', binf, fbinf);
 %fprintf('M3(t2): input = %.3f, output = %.3f\n', m3t2, fm3t2);
 
-    function obj = compute_obj(x)
+   function obj = compute_obj (l1,l2,r1,r2)
         % compute characteristics
-        xa = compute_rate(x);
-        factor = a/xa;
-        xbt1 = compute_idc(x, t1*factor);
-        xbt2 = compute_idc(x, t2*factor);
-        xbinf = compute_idc_limit(x);
-        xm3t2 = compute_m3(x,xa,xbt2,xbinf,t2*factor);
-        % compute objective
-        obj = 0;
-        obj = obj + (xa/a-1)^2;
-        obj = obj + (xbt1/bt1-1)^2;
-        obj = obj + (xbt2/bt2-1)^2;
-        obj = obj + (xbinf/binf-1)^2;
-        obj = obj + (xm3t2/m3t2-1)^2;
-    end
-
-    function xa = compute_rate(x)
-        l1 = x(1);
-        l2 = x(2);
-        r1 = x(3);
-        r2 = x(4);
         xa = (l1*r2 + l2*r1)/(r1 + r2);
-    end
-
-    function xbt = compute_idc(x,t)
-        l1 = x(1);
-        l2 = x(2);
-        r1 = x(3);
-        r2 = x(4);
-        xbt = (r1*(2*l1^2*r2^2*t - 2*l2^2*r2 - 2*l1^2*r2 + 2*l2^2*r2^2*t + 4*l1*l2*r2 + 2*l1^2*r2*exp(- r1*t - r2*t) + 2*l2^2*r2*exp(- r1*t - r2*t) - 4*l1*l2*r2^2*t - 4*l1*l2*r2*exp(- r1*t - r2*t)) + r1^2*(2*r2*t*l1^2 - 4*r2*t*l1*l2 + 2*r2*t*l2^2))/(t*(r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
-    end
-
-    function xbinf = compute_idc_limit(x)
-        l1 = x(1);
-        l2 = x(2);
-        r1 = x(3);
-        r2 = x(4);
+        factor = a/xa;
+        
+        xbt1 = (r1*(2*l1^2*r2^2*t1*factor - 2*l2^2*r2 - 2*l1^2*r2 + 2*l2^2*r2^2*t1*factor + 4*l1*l2*r2 + 2*l1^2*r2*exp(- r1*t1*factor - r2*t1*factor) + 2*l2^2*r2*exp(- r1*t1*factor - r2*t1*factor) - 4*l1*l2*r2^2*t1*factor - 4*l1*l2*r2*exp(- r1*t1*factor - r2*t1*factor)) + r1^2*(2*r2*t1*factor*l1^2 - 4*r2*t1*factor*l1*l2 + 2*r2*t1*factor*l2^2))/(t1*factor*(r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
+        
+        if (t1 ~= t2)
+            xbt2 = (r1*(2*l1^2*r2^2*t2*factor - 2*l2^2*r2 - 2*l1^2*r2 + 2*l2^2*r2^2*t2*factor + 4*l1*l2*r2 + 2*l1^2*r2*exp(- r1*t2*factor - r2*t2*factor) + 2*l2^2*r2*exp(- r1*t2*factor - r2*t2*factor) - 4*l1*l2*r2^2*t2*factor - 4*l1*l2*r2*exp(- r1*t2*factor - r2*t2*factor)) + r1^2*(2*r2*t2*factor*l1^2 - 4*r2*t2*factor*l1*l2 + 2*r2*t2*factor*l2^2))/(t2*factor*(r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
+        end
+        
         xbinf = ((2*r2*l1^2 - 4*r2*l1*l2 + 2*r2*l2^2)*r1^2 + (2*l1^2*r2^2 - 4*l1*l2*r2^2 + 2*l2^2*r2^2)*r1)/((r1 + r2)^3*(l1*r2 + l2*r1)) + 1;
-    end
-
-    function xm3t = compute_m3(x,xa,xbt,xbinf,t)
-        l1 = x(1);
-        l2 = x(2);
-        r1 = x(3);
-        r2 = x(4);
+        
+        t = t2*factor;
         d = r1+r2;
         p = (l1-l2)*(r1-r2);
         xg3t = xa^3*t^3 + ...
@@ -112,15 +88,22 @@ fmt2 = map_count_moment(FIT,t2,1:3);
             3*xa*(xbinf-1)/d*(p/d-xa)*t + ...
             3*xa/d^2*(xbinf-1)*(p + xa*d)*t*exp(-t*d) - ...
             6*xa/d^3*(xbinf-1)*p*(1-exp(-t*d));
-        xm3t = xg3t - 3*xa*t*(xa*t-1)*xbt - xa*t*(xa*t-1)*(xa*t-2);
+        xm3t2 = xg3t - 3*xa*t*(xa*t-1)*xbt2 - xa*t*(xa*t-1)*(xa*t-2);
+        % compute objective
+        obj = 0;
+        obj = obj + (xa/a-1)^2;
+        obj = obj + (xbt1/bt1-1)^2;
+        if t1 ~= t2
+            obj = obj + (xbt2/bt2-1)^2;
+        end
+        obj = obj + (xbinf/binf-1)^2;
+        obj = obj + (xm3t2/m3t2-1)^2;
+        
     end
 
-    function mmap = assemble_mmap(x)
-        % extract parameters
-        l1 = x(1);
-        l2 = x(2);
-        r1 = x(3);
-        r2 = x(4);
+
+  
+    function mmap = assemble_mmap(l1,l2,r1,r2)
         % assemble
         D0 = [-(l1+r1), r1; r2, -(l2+r2)];
         D1 = [l1 0; 0 l2];

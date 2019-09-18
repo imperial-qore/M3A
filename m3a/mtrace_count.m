@@ -10,8 +10,8 @@ N = zeros(periods,length(C));
 Tcum = cumsum(T);
 
 for i = 1:periods
-    tstart = (i-1) * t;
-    tend = i * t;
+    tstart = T(1) + (i-1) * t;
+    tend = T(1) + i * t;
     for c = 1:length(C)
         N(i,c) = sum( Tcum > tstart & Tcum <= tend & A == c );
     end
