@@ -21,13 +21,13 @@ if nargin <= 3
     t1 = 10*mean(T);
     tinf = max(10*t1, (TC(end)-TC(1)) / 100);
 end
-t2 = t1;
+t2 = t1+mean(T);
 t3 = tinf; % this controls the approximation - GC changed from t1 to tinf
 
-fprintf('Computing counting processs at resolution %f\n', t1);
+fprintf('Computing counting process at resolution %f\n', t1);
 mNt1 = mtrace_iat2counts(T, A, t1);
 mNt2 = mNt1;
-fprintf('Computing counting processs at resolution %f\n', tinf);
+fprintf('Computing counting process at resolution %f\n', tinf);
 mNtinf = mtrace_iat2counts(T, A, tinf);
 mNt3 = mNt1;
 
