@@ -10,15 +10,14 @@ if nargin ==2 || (nargin ==3 && strcmpi(opt,'default'))
     SUP = {};
     SUP{1} = krons(MMAPa{1},MMAPb{1});
     SUP{2} = krons(MMAPa{2},MMAPb{2});
-    
+
     for i=1:K1
         SUP{end+1} = krons(MMAPa{2+i},zeros(n2));
     end
-    
+
     for j=1:K2
         SUP{end+1} = krons(zeros(n1),MMAPb{2+j});
     end
-    SUP = mmap_normalize(SUP);
 elseif nargin ==3 && strcmpi(opt,'match')
     % class c in both MMAPa and MMAPb is mapped both into class c of SUP
     K1 = length(MMAPa);
@@ -30,10 +29,9 @@ elseif nargin ==3 && strcmpi(opt,'match')
     for i=1:K1
         SUP{i} = krons(MMAPa{i},MMAPb{i});
     end
-    SUP = mmap_normalize(SUP);
 elseif nargin == 1
     empty = cellfun(@isempty, MMAPa);
-    MMAPa(empty)=[];    
+    MMAPa(empty)=[];
     SUP = MMAPa{1};
     for i=2:length(MMAPa)
         SUP = mmap_super(SUP,MMAPa{i});
@@ -41,4 +39,6 @@ elseif nargin == 1
 else
     error('unrecognized option');
 end
+
+SUP = mmap_normalize(SUP);
 end
